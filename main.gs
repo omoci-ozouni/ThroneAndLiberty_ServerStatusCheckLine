@@ -19,6 +19,13 @@ function checkServerStatus() {
   Logger.log("Current status: " + serverStatus);
   Logger.log("Previous status: " + lastStatus);
 
+  // メンテナンス開始を検知
+  if (lastStatus !== "Maintenance" && serverStatus === "Maintenance") {
+    var message = "🚧Throne and Liberty サーバー '" + serverName + "' のメンテナンスが開始しました。";
+    Logger.log(message);
+    sendLineMessage(message);
+  }
+
   // メンテナンス終了を検知
   if (lastStatus === "Maintenance" && serverStatus !== "Maintenance") {
     var message = "🎉 Throne and Liberty サーバー '" + serverName + "' がオンラインになりました！";
@@ -46,7 +53,7 @@ function parseServerStatus(html, serverName) {
 function sendLineMessage(message) {
   // スクリプトプロパティからLINEアクセストークンを取得
   var accessToken = PropertiesService.getScriptProperties().getProperty("LINE_ACCESS_TOKEN");
-  
+  Logger.log(accessToken);
   if (!accessToken) {
     Logger.log("アクセストークンが設定されていません");
     return;
@@ -54,10 +61,10 @@ function sendLineMessage(message) {
 
   // ユーザーIDリストをLineConfigシートから取得
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('LineConfig');
-  var userIds = sheet.getRange('A2:A').getValues();  // A2からユーザーIDを取得
-  
-  // ユーザーIDリストをループしてメッセージを送信
-  for (var i = 0; i < userIds.length; i++) {
+  //var userIds = sheet.getRange('A2:A').getValues();  // A2からユーザーIDを取得
+  var userIds = sheet.getDataRange().getValues(); //データ範囲取得
+  // ユーザーIDリストをループしてメッセージを送信 ヘッダー（項目名）を省くため　i=1から
+  for (var i = 1; i < userIds.length; i++) {
     var userId = userIds[i][0];
     
     // ユーザーIDが空でない場合に送信

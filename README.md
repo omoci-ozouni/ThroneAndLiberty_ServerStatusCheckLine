@@ -1,6 +1,6 @@
 # ThroneAndLiberty_ServerStatusCheckLine
 ## できること
-Sunstormサーバーのサーバーメンテナンスが明けるとLineに通知が届きます。
+Sunstormサーバーがメンテナンスに入った時とメンテナンスが空けたときにLineに通知が届きます。
 
 ## 使い方
 下記のQRコードからおぞうにさんにLineの友達登録をしてください。<br><br>
